@@ -25,6 +25,26 @@ export const show = ({ params }, res, next) =>
     .then(success(res))
     .catch(next)
 
+export const isolated = ({ params }, res, next) =>
+  Vocabulary.findById(params.id)
+    .then(notFound(res))
+    .then((vocabulary) => vocabulary ? vocabulary.view() : null)
+    .then((vocabulary) => {
+      return vocabulary
+    })
+    .then(success(res))
+    .catch(next)
+
+export const group = ({ params }, res, next) =>
+  Vocabulary.findById(params.id)
+    .then(notFound(res))
+    .then((vocabulary) => vocabulary ? vocabulary.view() : null)
+    .then((vocabulary) => {
+      return vocabulary
+    })
+    .then(success(res))
+    .catch(next)
+
 export const update = ({ bodymen: { body }, params }, res, next) =>
   Vocabulary.findById(params.id)
     .then(notFound(res))
