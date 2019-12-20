@@ -22,6 +22,7 @@ export const processVocabulary = (vocabulary) => {
 
     // Regular expression used to separate using multiple spaces
     vocabulary.split(/\s+/g).forEach((word) => {
+      // Condition for array to have unique options
       if (!vocabularyIsolated.find((value) => value === word)) {
         vocabularyIsolated.push(word)
       }
@@ -61,6 +62,10 @@ export const processVocabularyVector = (processedString) => {
   })
 }
 
+
+
+
+
 export const processVocabularyGroup = (processedString) => {
   return new Promise((resolve) => {
     // Regular expression used to separate using multiple spaces
@@ -69,10 +74,17 @@ export const processVocabularyGroup = (processedString) => {
     let vocabularyGroup = []
     originalVector.forEach((word, index) => {
       if (index !== (originalVector.length - 1)) {
-        vocabularyGroup.push(`${word} ${originalVector[index + 1]}`)
+        // Condition for array to have unique options
+        if (!vocabularyGroup.find((value) => value === `${word} ${originalVector[index + 1]}`)) {
+          vocabularyGroup.push(`${word} ${originalVector[index + 1]}`)
+        }
       } else if (index !== 0) {
+        // Condition to prevent it from duplicating the last position
         if (index !== (originalVector.length - 1)) {
-          vocabularyGroup.push(`${originalVector[index - 1]} ${word}`)
+          // Condition for array to have unique options
+          if (!vocabularyGroup.find((value) => value === `${originalVector[index - 1]} ${word}`)) {
+            vocabularyGroup.push(`${originalVector[index - 1]} ${word}`)
+          }
         }
       }
     })
@@ -101,12 +113,23 @@ export const processGroupVector = (processedString) => {
       .then((vocabularyProcess) => {
         const originalVector = processedString.split(/\s+/g)
 
-        console.log(vocabularyProcess)
-        console.log(originalVector)
+        let vocabularyGroup = []
+        originalVector.forEach((word, index) => {
+          if (index !== (originalVector.length - 1)) {
+            // Condition for array to have unique options
+            vocabularyGroup.push(`${word} ${originalVector[index + 1]}`)
+
+          } else if (index !== 0) {
+            // Condition to prevent it from duplicating the last position
+            if (index !== (originalVector.length - 1)) {
+              vocabularyGroup.push(`${originalVector[index - 1]} ${word}`)
+            }
+          }
+        })
 
         const vocabularyVector = Array
           .from({length: vocabularyProcess.length}, e => null)
-          .map((word, index) => originalVector.filter((value) => value === vocabularyProcess[index]).length)
+          .map((word, index) => vocabularyGroup.filter((value) => value === vocabularyProcess[index]).length)
 
         resolve(vocabularyVector)
       })
