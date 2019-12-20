@@ -1,5 +1,6 @@
 import { success, notFound } from '../../services/response/'
 import { Vocabulary } from '.'
+import { processString, processIsolatedVocabulary, processVocabularyVector } from '../../services/vocabulary'
 
 export const create = ({ bodymen: { body } }, res, next) =>
   Vocabulary.create(body)
@@ -29,32 +30,16 @@ export const isolated = ({ params }, res, next) =>
   Vocabulary.findById(params.id)
     .then(notFound(res))
     .then((vocabulary) => vocabulary ? vocabulary.view() : null)
-    .then((vocabulary) => {
+    .then((vocabulary) => processIsolatedVocabulary(vocabulary))
+    .then(success(res))
+    .catch(next)
 
-      // @TODO Add more stopWords
-      const stopWords = ['a', 'agora', 'ainda', 'alguém', 'algum']
-
-      // Ignore case
-      // Regular expression to remove a punctuation range
-      // Regular expression to remove stopWords
-
-      vocabulary.text = vocabulary.text
-        .toLocaleLowerCase()
-        .replace(new RegExp('[.,;:]', 'g'), ' ')
-        .replace(new RegExp('\\b(' + stopWords.join('|') + ')\\b', 'ig'), '')
-        .trim()
-
-      let vocabularyIsolated = []
-
-      // Regular expression used to separate using multiple spaces
-      vocabulary.text.split(/\s+/g).forEach((word) => {
-        if (!vocabularyIsolated.find((value) => value === word)) {
-          vocabularyIsolated.push(word)
-        }
-      })
-
-      return vocabularyIsolated
-    })
+export const isolatedVector = ({ params }, res, next) =>
+  Vocabulary.findById(params.id)
+    .then(notFound(res))
+    .then((vocabulary) => vocabulary ? vocabulary.view() : null)
+    .then((vocabulary) => processString(vocabulary.text))
+    .then((vocabulary) => processVocabularyVector(vocabulary))
     .then(success(res))
     .catch(next)
 

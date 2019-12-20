@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { middleware as body } from 'bodymen'
-import { create, index, show, update, destroy, isolated, group } from './controller'
+import {create, index, show, update, destroy, isolated, group, isolatedVector} from './controller'
 import { schema } from './model'
 export Vocabulary, { schema } from './model'
 
@@ -55,6 +55,17 @@ router.get('/:id',
  */
 router.get('/isolated/:id',
   isolated)
+
+/**
+ * @api {get} /vocabularies/isolated/vector/:id Retrieve vocabulary
+ * @apiName RetrieveVocabulary
+ * @apiGroup Vocabulary
+ * @apiSuccess {Object} vocabulary Vocabulary's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 404 Vocabulary not found.
+ */
+router.get('/isolated/vector/:id',
+  isolatedVector)
 
 /**
  * @api {get} /vocabularies/group/:id Retrieve vocabulary
