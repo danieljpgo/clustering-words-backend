@@ -1,6 +1,9 @@
 import { Router } from 'express'
+import vocabulary from './vocabulary'
 
 const router = new Router()
+
+router.use('/vocabularies', vocabulary)
 
 /**
  * @apiDefine master Master access only
