@@ -30,7 +30,30 @@ export const isolated = ({ params }, res, next) =>
     .then(notFound(res))
     .then((vocabulary) => vocabulary ? vocabulary.view() : null)
     .then((vocabulary) => {
-      return vocabulary
+
+      // @TODO Add more stopWords
+      const stopWords = ['a', 'agora', 'ainda', 'alguém', 'algum']
+
+      // Ignore case
+      // Regular expression to remove a punctuation range
+      // Regular expression to remove stopWords
+
+      vocabulary.text = vocabulary.text
+        .toLocaleLowerCase()
+        .replace(new RegExp('[.,;:]', 'g'), ' ')
+        .replace(new RegExp('\\b(' + stopWords.join('|') + ')\\b', 'ig'), '')
+        .trim()
+
+      let vocabularyIsolated = []
+
+      // Regular expression used to separate using multiple spaces
+      vocabulary.text.split(/\s+/g).forEach((word) => {
+        if (!vocabularyIsolated.find((value) => value === word)) {
+          vocabularyIsolated.push(word)
+        }
+      })
+
+      return vocabularyIsolated
     })
     .then(success(res))
     .catch(next)
