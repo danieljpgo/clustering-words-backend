@@ -8,7 +8,7 @@ export const processString = (vocabulary) => {
 
     vocabulary = vocabulary
       .toLocaleLowerCase()
-      .replace(new RegExp('[.,;:]', 'g'), ' ')
+      .replace(new RegExp('[.,;:-]', 'g'), ' ')
       .replace(new RegExp('\\b(' + stopWords.join('|') + ')\\b', 'ig'), '')
       .trim()
 
