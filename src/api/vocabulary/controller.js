@@ -1,6 +1,6 @@
 import { success, notFound } from '../../services/response/'
 import { Vocabulary } from '.'
-import { processString, processIsolatedVocabulary, processVocabularyVector } from '../../services/vocabulary'
+import { processString, processIsolatedVocabulary, processGroupVocabulary, processGroupVector, processVocabularyVector } from '../../services/vocabulary'
 
 export const create = ({ bodymen: { body } }, res, next) =>
   Vocabulary.create(body)
@@ -26,6 +26,21 @@ export const show = ({ params }, res, next) =>
     .then(success(res))
     .catch(next)
 
+export const update = ({ bodymen: { body }, params }, res, next) =>
+  Vocabulary.findById(params.id)
+    .then(notFound(res))
+    .then((vocabulary) => vocabulary ? Object.assign(vocabulary, body).save() : null)
+    .then((vocabulary) => vocabulary ? vocabulary.view(true) : null)
+    .then(success(res))
+    .catch(next)
+
+export const destroy = ({ params }, res, next) =>
+  Vocabulary.findById(params.id)
+    .then(notFound(res))
+    .then((vocabulary) => vocabulary ? vocabulary.remove() : null)
+    .then(success(res, 204))
+    .catch(next)
+
 export const isolated = ({ params }, res, next) =>
   Vocabulary.findById(params.id)
     .then(notFound(res))
@@ -47,23 +62,15 @@ export const group = ({ params }, res, next) =>
   Vocabulary.findById(params.id)
     .then(notFound(res))
     .then((vocabulary) => vocabulary ? vocabulary.view() : null)
-    .then((vocabulary) => {
-      return vocabulary
-    })
+    .then((vocabulary) => processGroupVocabulary(vocabulary))
     .then(success(res))
     .catch(next)
 
-export const update = ({ bodymen: { body }, params }, res, next) =>
+export const groupVector = ({ params }, res, next) =>
   Vocabulary.findById(params.id)
     .then(notFound(res))
-    .then((vocabulary) => vocabulary ? Object.assign(vocabulary, body).save() : null)
-    .then((vocabulary) => vocabulary ? vocabulary.view(true) : null)
+    .then((vocabulary) => vocabulary ? vocabulary.view() : null)
+    .then((vocabulary) => processString(vocabulary.text))
+    .then((vocabulary) => processGroupVector(vocabulary))
     .then(success(res))
-    .catch(next)
-
-export const destroy = ({ params }, res, next) =>
-  Vocabulary.findById(params.id)
-    .then(notFound(res))
-    .then((vocabulary) => vocabulary ? vocabulary.remove() : null)
-    .then(success(res, 204))
     .catch(next)

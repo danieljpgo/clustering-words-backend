@@ -45,11 +45,11 @@ export const processIsolatedVocabulary = (vocabulary) => {
   })
 }
 
-export const processVocabularyVector = (stringProcess) => {
-  return new Promise((resolve) => {
-    processVocabulary(stringProcess)
+export const processVocabularyVector = (processedString) => {
+  return new Promise((resolve, reject) => {
+    processVocabulary(processedString)
       .then((vocabularyProcess) => {
-        const originalVector = stringProcess.split(/\s+/g)
+        const originalVector = processedString.split(/\s+/g)
 
         const vocabularyVector = Array
           .from({length: vocabularyProcess.length}, e => null)
@@ -57,5 +57,59 @@ export const processVocabularyVector = (stringProcess) => {
 
         resolve(vocabularyVector)
       })
+      .catch((err) => reject(err))
+  })
+}
+
+export const processVocabularyGroup = (processedString) => {
+  return new Promise((resolve) => {
+    // Regular expression used to separate using multiple spaces
+    const originalVector = processedString.split(/\s+/g)
+
+    let vocabularyGroup = []
+    originalVector.forEach((word, index) => {
+      if (index !== (originalVector.length - 1)) {
+        vocabularyGroup.push(`${word} ${originalVector[index + 1]}`)
+      } else if (index !== 0) {
+        if (index !== (originalVector.length - 1)) {
+          vocabularyGroup.push(`${originalVector[index - 1]} ${word}`)
+        }
+      }
+    })
+
+    resolve(vocabularyGroup)
+  })
+}
+
+export const processGroupVocabulary = (vocabulary) => {
+  return new Promise((resolve, reject) => {
+    processString(vocabulary.text)
+      .then((processedString) => {
+        processVocabularyGroup(processedString)
+          .then((vocabularyGroup) => {
+            resolve(vocabularyGroup)
+          })
+          .catch((err) => reject(err))
+      })
+      .catch((err) => reject(err))
+  })
+}
+
+export const processGroupVector = (processedString) => {
+  return new Promise((resolve, reject) => {
+    processVocabularyGroup(processedString)
+      .then((vocabularyProcess) => {
+        const originalVector = processedString.split(/\s+/g)
+
+        console.log(vocabularyProcess)
+        console.log(originalVector)
+
+        const vocabularyVector = Array
+          .from({length: vocabularyProcess.length}, e => null)
+          .map((word, index) => originalVector.filter((value) => value === vocabularyProcess[index]).length)
+
+        resolve(vocabularyVector)
+      })
+      .catch((err) => reject(err))
   })
 }
