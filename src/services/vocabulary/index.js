@@ -1,6 +1,6 @@
 import { stopWords } from '../utils/stopwords'
 
-export const processString = (vocabulary) => {
+export const processGenericString = (vocabulary) => {
   return new Promise((resolve) => {
     // Ignore case
     // Regular expression to remove a punctuation range
@@ -16,7 +16,7 @@ export const processString = (vocabulary) => {
   })
 }
 
-export const processVocabulary = (vocabulary) => {
+export const processIsolated = (vocabulary) => {
   return new Promise((resolve) => {
     let vocabularyIsolated = []
 
@@ -34,9 +34,9 @@ export const processVocabulary = (vocabulary) => {
 
 export const processIsolatedVocabulary = (vocabulary) => {
   return new Promise((resolve, reject) => {
-    processString(vocabulary.text)
+    processGenericString(vocabulary.text)
       .then((processedString) => {
-        processVocabulary(processedString)
+        processIsolated(processedString)
           .then((processedVocabulary) => {
             resolve(processedVocabulary)
           })
@@ -46,9 +46,9 @@ export const processIsolatedVocabulary = (vocabulary) => {
   })
 }
 
-export const processVocabularyVector = (processedString) => {
+export const processIsolatedVector = (processedString) => {
   return new Promise((resolve, reject) => {
-    processVocabulary(processedString)
+    processIsolated(processedString)
       .then((vocabularyProcess) => {
         const originalVector = processedString.split(/\s+/g)
 
@@ -62,11 +62,7 @@ export const processVocabularyVector = (processedString) => {
   })
 }
 
-
-
-
-
-export const processVocabularyGroup = (processedString) => {
+export const processGroup = (processedString) => {
   return new Promise((resolve) => {
     // Regular expression used to separate using multiple spaces
     const originalVector = processedString.split(/\s+/g)
@@ -95,9 +91,9 @@ export const processVocabularyGroup = (processedString) => {
 
 export const processGroupVocabulary = (vocabulary) => {
   return new Promise((resolve, reject) => {
-    processString(vocabulary.text)
+    processGenericString(vocabulary.text)
       .then((processedString) => {
-        processVocabularyGroup(processedString)
+        processGroup(processedString)
           .then((vocabularyGroup) => {
             resolve(vocabularyGroup)
           })
@@ -109,16 +105,14 @@ export const processGroupVocabulary = (vocabulary) => {
 
 export const processGroupVector = (processedString) => {
   return new Promise((resolve, reject) => {
-    processVocabularyGroup(processedString)
+    processGroup(processedString)
       .then((vocabularyProcess) => {
         const originalVector = processedString.split(/\s+/g)
 
         let vocabularyGroup = []
         originalVector.forEach((word, index) => {
           if (index !== (originalVector.length - 1)) {
-            // Condition for array to have unique options
             vocabularyGroup.push(`${word} ${originalVector[index + 1]}`)
-
           } else if (index !== 0) {
             // Condition to prevent it from duplicating the last position
             if (index !== (originalVector.length - 1)) {

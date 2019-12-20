@@ -1,6 +1,6 @@
 import { success, notFound } from '../../services/response/'
 import { Vocabulary } from '.'
-import { processString, processIsolatedVocabulary, processGroupVocabulary, processGroupVector, processVocabularyVector } from '../../services/vocabulary'
+import { processGenericString, processIsolatedVocabulary, processIsolatedVector, processGroupVocabulary, processGroupVector } from '../../services/vocabulary'
 
 export const create = ({ bodymen: { body } }, res, next) =>
   Vocabulary.create(body)
@@ -53,8 +53,8 @@ export const isolatedVector = ({ params }, res, next) =>
   Vocabulary.findById(params.id)
     .then(notFound(res))
     .then((vocabulary) => vocabulary ? vocabulary.view() : null)
-    .then((vocabulary) => processString(vocabulary.text))
-    .then((vocabulary) => processVocabularyVector(vocabulary))
+    .then((vocabulary) => processGenericString(vocabulary.text))
+    .then((vocabulary) => processIsolatedVector(vocabulary))
     .then(success(res))
     .catch(next)
 
@@ -70,7 +70,7 @@ export const groupVector = ({ params }, res, next) =>
   Vocabulary.findById(params.id)
     .then(notFound(res))
     .then((vocabulary) => vocabulary ? vocabulary.view() : null)
-    .then((vocabulary) => processString(vocabulary.text))
+    .then((vocabulary) => processGenericString(vocabulary.text))
     .then((vocabulary) => processGroupVector(vocabulary))
     .then(success(res))
     .catch(next)
