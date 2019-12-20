@@ -7,6 +7,8 @@ import { errorHandler as queryErrorHandler } from 'querymen'
 import { errorHandler as bodyErrorHandler } from 'bodymen'
 import { env } from '../../config'
 
+import path from 'path'
+
 export default (apiRoot, routes) => {
   const app = express()
 
@@ -22,6 +24,13 @@ export default (apiRoot, routes) => {
   app.use(apiRoot, routes)
   app.use(queryErrorHandler())
   app.use(bodyErrorHandler())
+
+  // ########## Server Static Files ################ //
+  app.use(express.static(path.dirname('') + '/webapp'))
+  app.get('/', function (req, res) {
+    res.sendFile(path.resolve(path.dirname('') + '/webapp/index.html')) // load the single view file (angular will handle the page changes on the front-end)
+  })
+  // ########## Server Static Files ################ //
 
   return app
 }
