@@ -48,8 +48,8 @@ The project was developed as a challenge to create the **API Rest** that solves 
 - The number **(n)** word vectors of all documents, considering the vocabulary formed by groups of 2 words in sequence **(2-gram)**.
 
 ## :computer: Integrations
-This project is part of the **Little Bills** system, the other projects are located at:
-- [Frontend Little Bills](https://github.com/vieirasolutions/front-littlebills)
+This project is part of the **Clustering Words** system, the other projects are located at:
+- [Frontend Clustering Words](https://github.com/danieljpog/clustering-words-frontend)
 
 ## :man_technologist: Technologies
 The main technologies used to develop the project were:
