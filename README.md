@@ -1,11 +1,3 @@
-<!-- <h1 align="center"> -->
-   <!-- <img
-      alt="wallet"
-      title="wallet"
-      src=".github/wallet.svg"
-      width="200px" /> -->
-   <!-- <div align="center">Clustering Words</div> -->
-<!-- </h1> -->
  
 <h1> Clustering Words Backend </h1>
 
@@ -39,6 +31,14 @@
    <a href="#runner-getting-started">Getting Started</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
    <a href="#page_with_curl-license">License</a>
 </p>
+
+<h1 align="center">
+   <img
+      alt="notebook"
+      title="notebook"
+      src=".github/test.gif"
+      width="600px" />
+</h1>
 
 ## :memo: Project
 The project was developed as a challenge to create the **API Rest** that solves the following problems related to **Natural Language Processing**:
