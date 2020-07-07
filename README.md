@@ -25,7 +25,7 @@
 ----
 
 <p align="center">
-   <a href="#memo-project">Project</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+   <a href="#dart-challenge">Challenge</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
    <a href="#computer-integrations">Integrations</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
    <a href="#man_technologist-technologies">Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
    <a href="#runner-getting-started">Getting Started</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -40,7 +40,7 @@
       width="600px" />
 </h1>
 
-## :memo: Project
+## :dart: Challenge
 The project was developed as a challenge to create a **API Rest** that solves the following problems related to **Natural Language Processing**:
 - The complete vocabulary formed by the isolated words.
 - The complete vocabulary formed by groups of 2 words in sequence **(2-gram)**.
